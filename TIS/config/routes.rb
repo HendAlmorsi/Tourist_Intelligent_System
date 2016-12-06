@@ -53,4 +53,10 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  resources :places, except:[:update]
+  resources :requests, only: [:show, :index]
+
+  post '/request/:id/accept/' => 'requests#accept'
+  post '/request/:id/reject/' => 'requests#reject'
+  
 end

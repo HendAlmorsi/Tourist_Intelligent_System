@@ -1,11 +1,14 @@
 class PlacesController < ApplicationController
-	before_filter :load_question, only: :show, :destroy
+  before_action :load_place, only: [:show, :destroy]
 
   def create
 		@place = Place.new(place_params)
 		if @place.save
       #error
 		end
+
+    @request = @place.request.create()
+    
 	end
 
   def index
@@ -18,19 +21,20 @@ class PlacesController < ApplicationController
 
   def destroy
       @place.destroy
+      @place.request.destroy()
   end 
 
 	private
 
 	def place_params
-		params[:question][:user_id] = current_user.id
-		params.require(:question).permit(:name, :state, :type, :description, :price)
+		#params[:question][:user_id] = current_user.id
+		params.require(:place).permit(:name, :state, :type, :description, :price)
 	end
 
 	def load_place
     @place = Place.where(id: params[:id]).first
-    if !place
-      render json: {status: false, message: I18n.t('place.not_found')}, status: :not_found
+    if !@place
+      render json: {status: false, message: 'place.not_found'}, status: :not_found
     end
   end
 
