@@ -7,10 +7,9 @@
 #    t.float :price, default: 0.0
 # -------------------------------------
 class Place < ActiveRecord::Base
-  enum state: {0: "pending", 1: "accepted", 2: "rejected"}
-  enum type: {0: "Hotel", 1: "Restauratant"}
+  enum state: {pending: 0, accepted: 1, rejected: 2}
+  enum type: [:Hotel, :Restaurant]
 
-  validates : :name, :type, :description, :price, presence: true
-
+  validates :name, :state, :description, :price, presence: true
 
 end
